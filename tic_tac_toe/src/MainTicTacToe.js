@@ -11,11 +11,22 @@ import React, { useState } from "react";
  *  - Light theme using custom palette
  */
 
-// Define the color palette as constants
+/*
+ * MainTicTacToe (RETRO/PIXEL ARCADE STYLE)
+ * Refactored to use retro color, blocky font, thick borders, pixel buttons, and classic drop-shadow look.
+ */
+
+// Retro palette for possible use in inline, but most colors taken from App.css retro classes
 const COLORS = {
-  primary: "#ffffff",     // background
-  secondary: "#000000",   // text
-  accent: "#2196f3",      // highlights/buttons
+  primary: "#f3e5ab",         // off-white/beige
+  secondary: "#262626",       // dark text
+  accent: "#3AFF1D",          // pixel green for status
+  shadow: "#7c654c",
+  border: "#100a02",
+  board: "#C2B280",
+  btn: "#a43c18",
+  red: "#be332a",
+  blue: "#1749be",
 };
 
 // Helper: all winning line indices for a 3x3 board
@@ -100,73 +111,52 @@ function MainTicTacToe() {
 
   // Render
   return (
-    <div style={{
-      width: "100%",
-      minHeight: "calc(100vh - 120px)",
-      background: COLORS.primary,
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: "20px 0",
-      color: COLORS.secondary,
-    }}>
+    <div
+      style={{
+        width: "100%",
+        minHeight: "calc(100vh - 120px)",
+        background: "none",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "17px 0 20px 0",
+      }}
+    >
       {/* Status bar */}
       <div
-        style={{
-          marginBottom: 30,
-          fontSize: 22,
-          fontWeight: 600,
-          minHeight: 36,
-          color: gameOver
-            ? (winner ? COLORS.accent : "#999")
-            : COLORS.secondary,
-          letterSpacing: "0.5px"
-        }}
+        className={
+          "retro-statusbar" +
+          (gameOver && !winner ? " draw" : "")
+        }
         data-testid="status-bar"
+        style={{
+          marginTop: 6,
+        }}
       >
         {statusMsg}
       </div>
 
       {/* 3x3 Grid */}
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3, 64px)",
-          gridTemplateRows: "repeat(3, 64px)",
-          gap: "8px",
-          marginBottom: 32,
-          boxShadow: "0px 2px 8px rgba(0,0,0,0.06)",
-          background: "#f8faff",
-          borderRadius: 12,
-          padding: 12,
-        }}
+        className="retro-board"
         data-testid="tic-tac-toe-board"
+        style={{
+          marginBottom: 32,
+        }}
       >
         {board.map((cell, idx) => (
           <button
             key={idx}
             onClick={() => handleCellClick(idx)}
-            style={{
-              width: 64,
-              height: 64,
-              fontSize: "2rem",
-              fontWeight: 700,
-              color:
-                cell === "X"
-                  ? COLORS.accent
-                  : cell === "O"
-                  ? COLORS.secondary
-                  : "#bbb",
-              background: COLORS.primary,
-              border: `2px solid ${COLORS.accent}`,
-              borderRadius: 8,
-              cursor: cell || gameOver ? "default" : "pointer",
-              transition: "background 0.15s",
-              outline: "none",
-              boxShadow: cell ? "0 1px 4px rgba(33,150,243,0.06)" : undefined,
-              userSelect: "none",
-            }}
+            className={
+              "retro-cell-btn" +
+              (cell === "X"
+                ? " retro-cell-x"
+                : cell === "O"
+                ? " retro-cell-o"
+                : "")
+            }
             aria-label={
               cell
                 ? `Cell ${idx + 1} marked ${cell}`
@@ -182,19 +172,13 @@ function MainTicTacToe() {
 
       {/* Reset Button */}
       <button
+        className="btn"
         style={{
-          background: COLORS.accent,
-          color: COLORS.primary,
-          border: "none",
-          borderRadius: 6,
-          padding: "12px 36px",
-          fontSize: "1.1rem",
-          fontWeight: 600,
-          marginTop: 4,
-          letterSpacing: "0.5px",
-          cursor: "pointer",
-          boxShadow: "0 2px 6px rgba(33,150,243,0.08)",
-          transition: "background 0.16s",
+          background: COLORS.btn,
+          color: "#ffe5c2",
+          fontSize: "1.19rem",
+          boxShadow: "0 4px 0 #730808",
+          marginTop: 8,
         }}
         onClick={handleReset}
         data-testid="reset-btn"
